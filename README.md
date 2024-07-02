@@ -5,6 +5,7 @@
 **Cryptogame** is a modern web application project developed with Ruby on Rails 7, offering a diverse and engaging online gaming platform. The project features popular games such as scratch cards, slot games, and horse racing, providing an enjoyable and rich experience for users.
 
 ## Tính Năng Chính / Key Features
+- ``demo: http://36.50.232.24:3000``
 
 ### Phần Người Dùng / User Section
 
@@ -24,9 +25,6 @@
   ![Game đua ngựa](demo/4.png)
   
   **Play Games**: Experience a variety of entertainment games including scratch cards, slot games, and horse racing.
-  ![Scratch Card Game](demo/2.png)
-  ![Slot Game](demo/3.png)
-  ![Horse Racing Game](demo/4.png)
 
 - **Nạp Tiền**: Hỗ trợ nạp tiền vào tài khoản người dùng qua bitcoin và đang tích hợp thêm phương thức nạp bằng VND.
 
@@ -42,7 +40,6 @@
   ![Admin Panel](demo/5.png)
 
   **Overview Management**: Monitors and manages system activities and key metrics.
-  ![Admin Panel](demo/5.png)
 
 - **Xem Chi Tiết Người Dùng**: Truy cập thông tin chi tiết và theo dõi hoạt động của từng người dùng.
 
@@ -62,13 +59,13 @@ Dự án sử dụng **SQLite** làm cơ sở dữ liệu chính, đảm bảo s
 The project uses **SQLite** as the primary database, ensuring stability and efficiency in data storage.
 
 ## Tình Trạng Dự Án / Project Status
-Dự án Cryptogame hiện đang trong giai đoạn phát triển và chưa hoàn thiện. Chúng tôi đang tích cực làm việc để hoàn thiện các tính năng chính, bao gồm việc cấu hình tỷ lệ cho các trò chơi nhằm mang lại sự công bằng và trải nghiệm tốt nhất cho người chơi.
+Dự án Cryptogame hiện đang trong giai đoạn phát triển và chưa hoàn thiện. Tôi đang tích cực làm việc để hoàn thiện các tính năng chính, bao gồm việc cấu hình tỷ lệ cho các trò chơi nhằm mang lại sự công bằng và trải nghiệm tốt nhất cho người chơi.
 
-Cryptogame is currently under development and not yet complete. We are actively working on finalizing key features, including configuring game ratios to ensure fairness and the best possible experience for players.
+Cryptogame is currently under development and not yet complete. I am actively working on finalizing key features, including configuring game ratios to ensure fairness and the best possible experience for players.
 
-Chúng tôi rất mong nhận được sự ủng hộ và phản hồi từ cộng đồng để cùng nhau hoàn thiện và nâng cao chất lượng của Cryptogame.
+Tôi rất mong nhận được sự ủng hộ và phản hồi từ cộng đồng để cùng nhau hoàn thiện và nâng cao chất lượng của Cryptogame.
 
-We welcome feedback and support from the community to help us refine and enhance Cryptogame.
+Welcome feedback and support from the community to help me refine and enhance Cryptogame.
 
 ---
 
