@@ -1,0 +1,2 @@
+class ScratchGame < ApplicationRecord
+end

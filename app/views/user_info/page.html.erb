@@ -1,0 +1,116 @@
+<%= render "base/sidebar" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Cập nhật thông tin tài khoản</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+					<li class="breadcrumb-item active">Cập nhật</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+		<div class="row">
+		<div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">	
+              <i class="fas fa-user"></i>
+              Đổi mật khẩu
+            </h3>
+          </div>
+          <div class="card-body">
+            
+          <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Mật khẩu</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <form method="POST" action="">
+				<div class="card-body">
+                  <div class="form-group">
+                    <label>Mật khẩu hiện tại</label>
+                    <input name="password" id="password" type="password" class="form-control" placeholder="Mật khẩu cũ">
+                  </div>
+				   <div class="form-group">
+                    <label>Mật khẩu mới</label>
+                    <input name="password_1" id="password_new1" type="password" class="form-control" placeholder="Mật khẩu mới">
+                  </div>
+				   <div class="form-group">
+                    <label>Nhập lại mật khẩu mới</label>
+                    <input name="password_2" id="password_new2" type="password" class="form-control" placeholder="Mật khẩu mới">
+                  </div>
+				  <input name="csrf-token" id="xscf" type="hidden" class="form-control" value='<%= csrf_meta_tags %>'>
+                </div>
+				</form>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button id="change_password" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </div>
+            </div>
+		  
+		  
+			  
+		  
+            </div>
+          <!-- /.card -->
+        </div>
+		</div>
+		
+			
+		
+		</div>
+	</div>
+	</div>
+	
+
+
+
+<script>
+$(document).ready(function() {
+    $('#change_password').click(function(event) {
+        event.preventDefault();
+        
+        var currentPassword = $('#password').val();
+        var newPassword1 = $('#password_new1').val();
+        var newPassword2 = $('#password_new2').val();
+        
+        if (currentPassword === "" || newPassword1 === "" || newPassword2 === "") {
+            alert("Vui lòng điền tất cả các trường.");
+            return;
+        }
+		$.ajaxSetup({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+		}
+		});
+        $.ajax({
+            url: '/user/change_password', // Đường dẫn đến controller đổi mật khẩu
+            method: 'POST',
+            data: {
+                password: currentPassword,
+                password_1: newPassword1,
+                password_2: newPassword2
+            },
+            success: function(response) {
+                if (response.code === 0) {
+                    alert("Đổi mật khẩu thành công.");
+                } else {
+                    alert(response.msg);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+            }
+        });
+    });
+});
+</script>

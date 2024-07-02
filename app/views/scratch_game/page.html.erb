@@ -1,0 +1,271 @@
+<%= render "base/sidebar" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Scratch game</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Scratch game</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+		<div class="row">
+		<div class="col-md-6">
+<div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">
+                  
+                  <strong>Mua vé cào</strong>
+                </h3>
+              </div>
+              <!-- /.card-header -->
+			  
+			  
+			  <div class="col-md-12">
+			  <form id="buy_scratch_form" action="scratch-game/buy" method="POST">
+			  
+ <div class="form-group">
+                        <label>Nhập số tiền muốn mua</label>
+                        <input id="money_input" step="any" type="number" class="form-control" placeholder="Nhập số tiền muốn mua" name="money">
+                      </div>
+			  <div class="col-md-12">
+			  <input type="submit" name="commit" value="Mua thẻ cào" class="btn btn-primary" data-disable-with="Mua thẻ cào">
+			  </div>
+			  </form>
+			</div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+		<div class="col-md-6">
+<div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">
+                  
+                  <strong>Luật chơi</strong>
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <ol>
+                  - Mỗi lần chỉ được mua 1 vé để cào<br>
+				  - Sau khi cào xong, kết quả sẽ được cập nhật trực tiếp <br>
+				  - Thanh toán theo tỉ lệ giá trị của vé cào như sau: x0, x0.88, x8.88, x88.88, x888.88 <br>
+				  - Số tiền mua ít nhất là 0.00001 BTC hoặc 0.0001 ETH<br>
+                </ol>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+		</div>
+		
+		<div class="row">
+		<div id="show_scratch" class="row" style="display: none;">
+		
+		
+		<div class ="col-md-6">
+		<div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">
+                  
+                  <strong>Vé cào</strong>
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+              <div id="scratch"><img src="/assets/scratchgame/img/4.png" /></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+		</div>
+		</div>
+		</div>
+		
+		
+		<div class="card card-dark">
+  <div class="card-header">
+    <h3 class="card-title">Lịch sử chơi gần nhất</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="history-table" class="table table-dark table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Lượt</th>
+            <th>Kết quả</th>
+            <th>Tiền cược</th>
+            <th>Thắng thua</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be populated by AJAX -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- /.card-body -->
+</div>
+		
+		</div>
+	</div>
+	</div>
+	
+	<script src="/assets/scratchgame/js/raf.js"></script>
+	<script src="/assets/scratchgame/js/ScratchIt.min.js"></script>
+  <script>
+    var containerEl = document.getElementById('scratch'),
+        overlayImgUrl = '/assets/scratchgame/img/overlay.png',
+        brushImgUrl = '/assets/scratchgame/img/brush1.png',
+        revealPercent = 10;
+
+    // event handler that fades out the overlay once 50% of it has been removed
+    function onReveal(){
+      containerEl.className += ' revealed';
+
+      // NOTE: really weird workaround to force Edge 16 to actually detect the css class name addition and render the fade out transition. getElementById doesn't work, it actually needs to be getElementsByTagName. Any style could be changed (like fontSize) to trigger the update
+      if(window.navigator.userAgent.indexOf("Edge") > -1){
+        document.getElementsByTagName('canvas')[0].style.width = '100%';
+      }
+	     $.ajax({
+  url: '/scratch-game/scratch',
+  method: 'GET',
+  success: function(response) {
+     alert('Chúc mừng ! Bạn đã thắng được '+response.kq);
+	 location.reload();
+  },
+  error: function(xhr, status, error) {
+    console.error(error);
+  }
+});
+    }
+
+    if(ScratchIt.isSupported()){
+      ScratchIt(containerEl, overlayImgUrl, brushImgUrl, onReveal, revealPercent);
+    }
+  </script>
+  
+  <link rel="stylesheet" href="/assets/scratchgame/css/style.css">
+  
+   <script>
+    $(document).ready(function() {
+      // Thiết lập token CSRF cho tất cả các yêu cầu AJAX
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      $('#buy_scratch_form').submit(function(event) {
+        event.preventDefault();
+
+        var money = $('#money_input').val();
+
+        $.ajax({
+  type: 'POST',
+  url: $(this).attr('action'),
+  data: { money: money },
+  dataType: 'json',
+  success: function(response) {
+    if (response.code === 0) {
+      switch (response.reward) {
+        case 0:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/1.png');
+          break;
+        case 0.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/2.png');
+          break;
+        case 8.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/3.png');
+          break;
+        case 88.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/4.png');
+          break;
+        case 888.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/5.png');
+          break;
+        default:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/1.png');
+      }
+	  $('#show_scratch').show();
+      alert('Thẻ cào mới đã được tạo thành công.');
+    } else if (response.code === 2) {
+		switch (response.reward) {
+        case 0:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/1.png');
+          break;
+        case 0.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/2.png');
+          break;
+        case 8.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/3.png');
+          break;
+        case 88.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/4.png');
+          break;
+        case 888.88:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/5.png');
+          break;
+        default:
+          $('#scratch img').attr('src', '/assets/scratchgame/img/1.png');
+      }
+      $('#show_scratch').show();
+      alert(response.msg);
+    } else {
+      alert(response.msg);
+    }
+  },
+  error: function(xhr, status, error) {
+    console.error(error);
+  }
+});
+      });
+    });
+  </script>
+  
+  
+  <script>
+   function fetchHistory() {
+        $.ajax({
+          url: '/scratch-game/result',  // Thay đổi URL thành endpoint của bạn
+          method: 'GET',
+          dataType: 'json',
+          headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(data) {
+            var rows = '';
+            data.forEach(function(history, index) {
+              if (history.status !== 'new') {
+                var result = history.status;  // Assuming 'status' is the result
+                var winLoss = history.reward > 0 ? 'Thắng' : 'Thua';
+                var winLossClass = history.reward > 0 ? 'bg-success' : (history.status === 'scratched' ? 'bg-danger' : 'bg-danger');
+                rows += `
+                  <tr>
+                    <td>${history.id}</td>
+                    <td>${history.reward}</td>
+                    <td>${history.price}</td>
+                    <td><span class="badge ${winLossClass}">${winLoss}</span></td>
+                  </tr>
+                `;
+              }
+            });
+            $('#history-table tbody').html(rows);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching history:', textStatus, errorThrown);
+          }
+        });
+      }
+
+      // Fetch history when the page is loaded
+      fetchHistory();
+  
+</script>

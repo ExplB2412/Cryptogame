@@ -1,0 +1,223 @@
+<%= render "base/sidebar_admin" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Tổng quan tài khoản</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+  <div class="col-md-12">
+  
+  <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Tìm kiếm tài khoản</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form id="searchForm">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nhập tên tài khoản</label>
+                    <input type="text" class="form-control" id="username_search" placeholder="Username" name="username">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+              </form>
+            </div>
+  
+  
+  
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Danh sách user</h3>
+      </div>
+      <div class="card-body">
+        <div id="userTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+          <div class="row">
+            <div class="col-sm-12 col-md-6"></div>
+            <div class="col-sm-12 col-md-6"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <table id="userTable" class="table table-dark table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Balance</th>
+                    <th>Ngày đăng ký</th>
+					<th>Tổng nạp</th>
+					<th>Tổng rút</th>
+					<th>Tổng rút đang chờ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Rows will be populated by JavaScript -->
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="userTable_info" role="status" aria-live="polite">
+                Hiển thị tổng số user ở đây
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="userTable_paginate">
+                <ul class="pagination">
+                  <li class="paginate_button page-item previous disabled" id="userTable_previous">
+                    <a href="#" aria-controls="userTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                  </li>
+                  <li class="paginate_button page-item active">
+                    <a href="#" aria-controls="userTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                  </li>
+                  <!-- More pagination items -->
+                  <li class="paginate_button page-item next" id="userTable_next">
+                    <a href="#" aria-controls="userTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+		
+		
+		
+	
+		
+		
+		
+		</div>
+	</div>
+	</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Fetch all user data when the page loads
+  fetchAllUsers();
+
+  // Handle form submission
+  $('#searchForm').on('submit', function(event) {
+    event.preventDefault();
+    const username = $('#username_search').val().trim();
+    fetchUserData(username);
+  });
+});
+
+function fetchAllUsers() {
+  fetch('/admin/users/view_user', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.code === 0) {
+      populateTable(data.data);
+    } else {
+      alert(data.msg);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function formatDate(date) {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+
+  return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+}
+
+function populateTable(users) {
+  const tableBody = document.querySelector('#userTable tbody');
+  tableBody.innerHTML = '';  // Clear existing rows
+
+  // Check if users is an array or a single object
+  if (Array.isArray(users)) {
+    users.forEach(user => {
+      addUserToTable(user);
+    });
+  } else {
+    addUserToTable(users);
+  }
+}
+
+function addUserToTable(user) {
+  const formattedDate = formatDate(new Date(user.create_time));
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${user.user_id}</td>
+    <td><a href='/admin/user/${user.user_id}' class='nav-link'>${user.username}</a></td>
+    <td>${user.balance}</td>
+    <td>${formattedDate}</td>
+    <td>${user.total_deposit}</td>
+    <td>${user.total_withdraw}</td>
+    <td>${user.pending_withdraw}</td>
+  `;
+  const tableBody = document.querySelector('#userTable tbody');
+  tableBody.appendChild(row);
+}
+
+function fetchUserData(username = '') {
+  if (username === '') {
+    fetchAllUsers();
+    return;
+  }
+  
+  const url = '/admin/users';
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+    url: url,
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ username: username }),
+    success: function(response) {
+      if (response.code === 0) {
+        populateTable(response.data);
+      } else {
+        alert(response.msg);
+      }
+    },
+    error: function(error) {
+      console.error('Error:', error);
+    }
+  });
+}
+</script>

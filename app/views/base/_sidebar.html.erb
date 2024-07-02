@@ -1,0 +1,158 @@
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <img src="/assets/dist/logo.png" alt="Cryptogame Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Cryptogame</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info">
+          <a href="#" class="d-block" id="info"></a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+         <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+         
+          <li class="nav-item">
+            <a href="/" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Tổng quan
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Các trò chơi
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">3</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/scratch-game" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Vé cào sổ xố</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/slot-game333" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Slotgame</p>
+                </a>
+              </li>
+			   <li class="nav-item">
+                <a href="/horseracing" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Đua ngựa</p>
+                </a>
+              </li>
+            </ul>
+          </li>  
+		 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Thông tin tài khoản
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/deposit" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nạp tiền</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/withdraw" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rút tiền</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/user" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cập nhật thông tin</p>
+                </a>
+              </li>
+			  <li class="nav-item">
+                <a href="/support" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Hỗ trợ</p>
+                </a>
+              </li>
+			  <li class="nav-item">
+                <a href="/logout" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Đăng xuất</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+            </ul>
+      </nav>
+
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+<script>
+// ajax update info
+// Đợi tài liệu được tải hoàn thành trước khi thực hiện bất kỳ hành động nào
+document.addEventListener("DOMContentLoaded", function() {
+  // Tạo một yêu cầu AJAX
+  var xhr = new XMLHttpRequest();
+  
+  // Thiết lập phương thức và URL của yêu cầu
+  xhr.open("GET", "/user/get_info", true);
+  
+  // Xác định hàm xử lý khi nhận được phản hồi từ máy chủ
+  xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      // Nếu yêu cầu thành công, lấy dữ liệu JSON từ phản hồi
+      var responseData = JSON.parse(xhr.responseText);
+      
+      // Hiển thị username trong phần tử HTML có id là "username"
+      document.getElementById("info").innerText = responseData.username + " | " + responseData.balance + " " + responseData.wallet;
+    } else {
+      // Xử lý lỗi nếu có
+      console.error('Request failed with status:', xhr.status);
+    }
+  };
+  
+  // Xử lý lỗi kết nối
+  xhr.onerror = function () {
+    console.error('Request failed');
+  };
+  
+  // Gửi yêu cầu
+  xhr.send();
+});
+
+
+
+</script>

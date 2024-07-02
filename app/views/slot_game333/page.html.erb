@@ -1,0 +1,261 @@
+<%= render "base/sidebar" %>
+  	<link rel="stylesheet" href="/assets/slot2machine/css/app.css">
+  <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Slot 333 game</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Slot 333 game</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content container-fluid">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-secondary">
+                            <div class="card-header">
+                                <h3 class="card-title">Slot Machine 333</h3>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                        <label>Nhập số tiền muốn mua</label>
+                        <input id="money" step="any" type="number" class="form-control" placeholder="Nhập số tiền muốn mua" name="money">
+                      </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">CON SỐ MAY MẮN - QUAY SIÊU TỐC</div>
+                                            <div class="panel-body">
+                                                <div class="well">
+                                                   Nhấn vào nút quay số để chơi. Kết quả được trả trực tiếp ngay.
+                                                </div>
+                                                <div class="slotwrapper" id="slot333">
+                                                    <ul id="slot333-1">
+                                                        <li>7</li>
+                                                        <li>5</li>
+                                                        <li>3</li>
+
+                                                    </ul>
+                                                    <ul id="slot333-2">
+                                                        <li>7</li>
+                                                        <li>5</li>
+                                                        <li>3</li>
+                                                    </ul>
+                                                    <ul id="slot333-3">
+                                                        <li>7</li>
+                                                        <li>5</li>
+                                                        <li>3</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="controls">
+                                                    <button id="spin" class="btn btn-success">Spin</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <strong>Payout</strong>
+                                </h3>
+                            </div>
+                            <div class="card-body">
+							
+							<div id="block_success" class="alert alert-success alert-dismissible" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-check"></i> Kết quả</h5>
+    <span id="result-message-success"></span>
+  </div>
+
+  <div id="block_error" class="alert alert-warning alert-dismissible" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-check"></i> Kết quả</h5>
+    <span id="result-message-error"></span>
+  </div>
+							
+							
+							<div id="sodu"> số dư hiện có: </div>
+                                <ol>
+									Payout: 
+                                    - 3-3-3: x 0.88<br>
+                                    - 5-5-5: x 2.88 <br>
+                                    - 7-7-7: x 4.88 <br>
+                                    - Chúc các bạn may mắn <br>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+               
+		<div class="card card-dark">
+              <div class="card-header">
+                <h3 class="card-title">Lịch sử chơi gần nhất</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="table-responsive">
+      <table id="history-table" class="table table-dark table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Lượt</th>
+            <th>Kết quả</th>
+            <th>Tiền cược</th>
+            <th>Thắng thua</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be populated by AJAX -->
+        </tbody>
+      </table>
+    </div>
+              </div>
+              <!-- /.card-body -->
+              
+            </div>
+
+			   </div>
+            </div>
+        </div>
+    </div>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     <script src="/assets/slot2machine/js/slotmachine.js"></script>
+
+	
+	
+	<script>
+	function spinSlot(slotId, endNumber) {
+                const slot = document.getElementById(slotId);
+                const items = slot.getElementsByTagName('li');
+                const itemHeight = items[0].offsetHeight;
+                const totalItems = items.length;
+                
+                // Calculate the total scroll distance
+                const scrollDistance = itemHeight * (totalItems - endNumber);
+
+                // Perform the scroll
+                slot.style.transition = 'transform 1s ease-out';
+                slot.style.transform = `translateY(-${scrollDistance}px)`;
+            }
+			
+			
+			
+        document.getElementById('spin').addEventListener('click', function() {
+            // Get the input values
+			 let money = parseFloat(document.getElementById('money').value);
+			   if (money <= 0) {
+				document.getElementById('result').innerHTML = 'Số tiền không hợp lệ';
+				return;
+					}
+					
+					$.ajaxSetup({
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+		 $.ajax({
+			url: '/slot-game333/spin',
+			method: 'POST',
+			data: { money: money },
+			success: function(response) {
+				if (response.code === 0) {
+				let num1 = response.num1;
+				let num2 = response.num2;
+				let num3 = response.num3;
+				let reward = response.reward;
+				let sodu = response.balance;
+        // Update the slots with the result
+				spinSlot('slot333-1', num1);
+				spinSlot('slot333-2', num2);
+				spinSlot('slot333-3', num3);
+
+        // Display the result message
+       
+	    if (reward > 0) {
+          // Display the success message
+          document.getElementById('result-message-success').innerHTML = 
+            `Chúc mừng bạn đã trúng ${reward}.`;
+          document.getElementById('block_success').style.display = 'block';
+          document.getElementById('block_error').style.display = 'none';
+        } else {
+          // Display the error message
+          document.getElementById('result-message-error').innerHTML = 
+            `Rất tiếc, bạn không trúng thưởng.`;
+          document.getElementById('block_success').style.display = 'none';
+          document.getElementById('block_error').style.display = 'block';
+        }
+		document.getElementById('sodu').innerHTML = `Số dư: ${sodu}`;
+	   fetchHistory();
+      } else {
+     
+	 
+	 
+      }
+    },
+    error: function(xhr, status, error) {
+      document.getElementById('result').innerHTML = 'Có lỗi xảy ra: ' + error;
+    }
+  });			
+			
+			
+			
+			
+          
+        });
+    </script>
+	
+	
+	<script>
+	  function fetchHistory() {
+        $.ajax({
+          url: '/slot-game333/result',  // Thay đổi URL thành endpoint của bạn
+          method: 'GET',
+          dataType: 'json',
+          headers: {
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function(data) {
+            var rows = '';
+            data.forEach(function(history, index) {
+              var result = `${history.num1}, ${history.num2}, ${history.num3}`;
+              var winLoss = history.reward > 0 ? 'Thắng' : 'Thua';
+              var winLossClass = history.reward > 0 ? 'bg-success' : 'bg-danger';
+              rows += `
+                <tr>
+                  <td>${history.id}</td>
+                  <td>${result}</td>
+                  <td>${history.price}</td>
+                  <td><span class="badge ${winLossClass}">${history.reward}</span></td>
+                </tr>
+              `;
+            });
+            $('#history-table tbody').html(rows);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching history:', textStatus, errorThrown);
+          }
+        });
+      }
+
+      // Fetch history when the page is loaded
+      fetchHistory();
+	
+	</script>

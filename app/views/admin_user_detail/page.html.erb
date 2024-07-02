@@ -1,0 +1,412 @@
+<%= render "base/sidebar_admin" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Tổng quan tài khoản</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+	
+	<div class="col-md-6">
+	  <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Thông tin tài khoản</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+				<div class="card-body">
+                  <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input type="text" id="username" class="form-control" placeholder="" disabled="" value="username">
+                  </div>
+				   <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="text" id="password" class="form-control" placeholder="" disabled="" value="mật khẩu">
+                  </div>
+				   <div class="form-group">
+                    <label>Loại ví</label>
+                    <input type="text" id="wallet_type" class="form-control" placeholder="" disabled="" value="Loại ví">
+                  </div>
+				   <div class="form-group">
+                    <label>Số dư hiện có</label>
+                    <input type="text" id="balance" class="form-control" placeholder="" disabled="" value="Số dư hiện có">
+                  </div>
+				    <div class="form-group">
+                    <label>IP đăng ký</label>
+                    <input type="text" id="ip" class="form-control" placeholder="" disabled="" value="ip đăng ký">
+                  </div>
+				   <div class="form-group">
+                    <label>Key</label>
+                    <input type="text" id="securitykey" class="form-control" placeholder="" disabled="" value="Key">
+                  </div>
+				   <div class="form-group">
+                    <label>Ngày tạo tài khoản</label>
+                    <input type="text" id="created_at" class="form-control" placeholder="" disabled="" value="Ngày tạo">
+                  </div>
+				   <div class="form-group">
+                    <label>Lần cập nhật</label>
+                    <input type="text" id="updated_at" class="form-control" placeholder="" disabled="" value="username">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+               
+            </div>
+		
+	</div>
+		<div class="col-md-6">
+	  <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Đặt mật khẩu mới</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <form id="change_pass">
+				<div class="card-body">
+				   <div class="form-group">
+                    <label>Đặt mật khẩu mới cho user</label>
+                    <input name="password" id="password_new" type="password" class="form-control" placeholder="Mật khẩu mới">
+                  </div>
+                </div>
+				</form>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button id="change_password" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </div>
+            </div>
+		<div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Tùy chỉnh số dư</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <form id="update_balance">
+				<div class="card-body">
+				   <div class="form-group">
+                    <label>Nhập số tiền muốn tùy chỉnh (có thể âm hoặc dương). Lưu ý loại ví</label>
+                    <input name="new_balance" id="new_balance" type="number" class="form-control" placeholder="Số dư muốn cộng thêm hoặc trừ">
+                  </div>
+                </div>
+				</form>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button id="update-new-balance" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                </div>
+            </div>
+	</div>
+	
+	
+  <div class="col-md-12">
+  
+ 	<div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title"><strong>Tổng quan hàng tháng</strong></h5>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+               <strong><p class="text-center" id="salesDate">
+                    <!-- Sales date will be filled dynamically by JavaScript -->
+                  </p></strong>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                           <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_deposit" style="color: blue;">$</h5>
+                      <span class="description-text">TỔNG NẠP</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_withdraw" style="color: yellow;">$</h5>
+                      <span class="description-text">TỔNG RÚT</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_bet" style="color: orange;">$</h5>
+                      <span class="description-text">TỔNG CƯỢC</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block">
+                      <h5 class="description-header" id="total_profit">$</h5>
+                      <span class="description-text">LỢI NHUẬN</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>	
+		
+		
+		
+		<div class="card card-primary">
+  <div class="card-header border-transparent">
+    <h3 class="card-title">Biến động số dư</h3>
+
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button type="button" class="btn btn-tool" data-card-widget="remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-dark table-striped m-0">
+        <thead>
+          <tr>
+            <th>Danh mục</th>
+            <th>Tiền cược</th>
+            <th>Lợi nhuận</th>
+            <th>Thời gian</th>
+          </tr>
+        </thead>
+        <tbody id="history_wallet_tbody">
+          <!-- Các hàng sẽ được thêm động từ JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+  <!-- /.card-body -->
+ <div class="card-footer">
+    <div class="pagination">
+        <button id="prevPage" class="btn btn-info">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage" class="btn btn-info">Next</button>
+    </div>
+</div>
+  <!-- /.card-footer -->
+</div>
+		
+
+  
+   </div>
+</div>
+
+		
+		
+		
+	
+		
+		
+		
+		</div>
+	</div>
+	</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rowsPerPage = 30;
+    let currentPage = 1;
+    let dataCache = [];
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function renderTablePage(data, page) {
+        const tbody = document.getElementById('history_wallet_tbody');
+        tbody.innerHTML = '';
+
+        const start = (page - 1) * rowsPerPage;
+        const end = page * rowsPerPage;
+        const pageData = data.slice(start, end);
+
+        pageData.forEach(entry => {
+            const tr = document.createElement('tr');
+
+            const categoryTd = document.createElement('td');
+            categoryTd.innerText = entry.content;
+            tr.appendChild(categoryTd);
+
+            const betTd = document.createElement('td');
+            betTd.innerText = `$${numberWithCommas(entry.money_buy.toFixed(2))}`;
+            tr.appendChild(betTd);
+
+            const profitTd = document.createElement('td');
+            const profitValue = entry.reward.toFixed(2);
+            profitTd.innerText = `$${numberWithCommas(profitValue)}`;
+            profitTd.style.color = profitValue <= 0 ? 'red' : 'green';
+            tr.appendChild(profitTd);
+
+            const timeTd = document.createElement('td');
+            timeTd.innerText = new Date(entry.created_at).toLocaleString();
+            tr.appendChild(timeTd);
+
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('pageInfo').innerText = `Page ${page} of ${Math.ceil(data.length / rowsPerPage)}`;
+        document.getElementById('prevPage').disabled = page === 1;
+        document.getElementById('nextPage').disabled = page === Math.ceil(data.length / rowsPerPage);
+    }
+ function updatePassword() {
+        const userId = window.location.pathname.split('/').pop();
+        const newPassword = document.getElementById('password_new').value;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      
+
+        fetch(`/admin/user/update-password/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            body: JSON.stringify({ password: newPassword })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 0) {
+                alert('Cập nhật mật khẩu thành công');
+                fetchData();
+            } else {
+                alert('Cập nhật mật khẩu thất bại: ' + data.msg);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating password:', error);
+            alert('Có lỗi xảy ra khi cập nhật mật khẩu');
+        });
+    }
+	
+	function updateBalance() {
+        const userId = window.location.pathname.split('/').pop();
+        const new_balance = document.getElementById('new_balance').value;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      
+
+        fetch(`/admin/user/update-balance/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            body: JSON.stringify({ new_balance: new_balance })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 0) {
+                alert('Cập nhật số dư');
+                fetchData();
+            } else {
+                alert('Cập nhật số dư thất bại: ' + data.msg);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating balance:', error);
+            alert('Có lỗi xảy ra khi cập nhật số dư');
+        });
+    }
+	
+	
+	
+    function fetchData() {
+	const userId = window.location.pathname.split('/').pop();
+        fetch(`/admin/view/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    document.getElementById('total_deposit').innerText = `$${numberWithCommas(data.total_deposit.toFixed(2))}`;
+                    document.getElementById('total_withdraw').innerText = `$${numberWithCommas(data.total_withdraw.toFixed(2))}`;
+                    document.getElementById('total_bet').innerText = `$${numberWithCommas(data.total_bet.toFixed(2))}`;
+
+                    const totalProfitElement = document.getElementById('total_profit');
+                    const totalProfitValue = data.total_profit.toFixed(2);
+                    totalProfitElement.innerText = `$${numberWithCommas(totalProfitValue)}`;
+                    totalProfitElement.style.color = totalProfitValue < 0 ? 'red' : 'green';
+
+                    const currentDate = new Date();
+                    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                    const salesDateText = `Từ ngày ${firstDayOfMonth.toLocaleDateString()} đến ${currentDate.toLocaleDateString()}`;
+                    document.getElementById('salesDate').innerText = salesDateText;
+
+                    const user = data.user;
+                    document.getElementById('username').value = user.username;
+                    document.getElementById('password').value = user.password;
+                    document.getElementById('ip').value = user.ip;
+                    document.getElementById('securitykey').value = user.securitykey;
+                    document.getElementById('created_at').value = new Date(user.created_at).toLocaleString();
+                    document.getElementById('updated_at').value = new Date(user.updated_at).toLocaleString();
+					const wallet = data.wallet;
+					document.getElementById('wallet_type').value = wallet.wallet_type;
+                    document.getElementById('balance').value = wallet.balance;
+
+                    dataCache = data.data;
+                    renderTablePage(dataCache, currentPage);
+                } else {
+                    console.error(data.msg);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    fetchData();
+
+    document.getElementById('prevPage').addEventListener('click', prevPage);
+    document.getElementById('nextPage').addEventListener('click', nextPage);
+	document.getElementById('change_password').addEventListener('click', updatePassword);
+	document.getElementById('update-new-balance').addEventListener('click', updateBalance);
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderTablePage(dataCache, currentPage);
+        }
+    }
+
+    function nextPage() {
+        if (currentPage < Math.ceil(dataCache.length / rowsPerPage)) {
+            currentPage++;
+            renderTablePage(dataCache, currentPage);
+        }
+    }
+});
+</script>

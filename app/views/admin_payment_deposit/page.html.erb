@@ -1,0 +1,200 @@
+<%= render "base/sidebar_admin" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Danh sách nộp tiền</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+  <div class="col-md-12">
+  
+  <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Tìm kiếm tài khoản</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form id="searchForm">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nhập tên tài khoản</label>
+                    <input type="text" class="form-control" id="username_search" placeholder="Username" name="username">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+              </form>
+            </div>
+  
+  
+  
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Danh sách nộp tiền</h3>
+      </div>
+      <div class="card-body">
+        <div id="userTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+          <div class="row">
+            <div class="col-sm-12 col-md-6"></div>
+            <div class="col-sm-12 col-md-6"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <table id="depositTable" class="table table-dark table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Invoice ID</th>
+                    <th>Username</th>
+                    <th>Số tiền nộp</th>
+                    <th>Ngày nộp</th>
+					<th>Loại ví</th>
+					<th>Trạng thái</th>
+					<th>Tùy chỉnh</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Rows will be populated by JavaScript -->
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="userTable_info" role="status" aria-live="polite">
+                Hiển thị tổng số user ở đây
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="userTable_paginate">
+                <ul class="pagination">
+                  <li class="paginate_button page-item previous disabled" id="userTable_previous">
+                    <a href="#" aria-controls="userTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                  </li>
+                  <li class="paginate_button page-item active">
+                    <a href="#" aria-controls="userTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                  </li>
+                  <!-- More pagination items -->
+                  <li class="paginate_button page-item next" id="userTable_next">
+                    <a href="#" aria-controls="userTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+		
+		
+		
+	
+		
+		
+		
+		</div>
+	</div>
+	</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function fetchDepositData() {
+      fetch('/admin/view/deposit')
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 0) {
+            const depositData = data.data;
+            const tbody = document.querySelector('#depositTable tbody');
+            tbody.innerHTML = '';
+
+            depositData.forEach(deposit => {
+              const tr = document.createElement('tr');
+
+              const invoiceTd = document.createElement('td');
+              invoiceTd.innerText = deposit.invoice;
+              tr.appendChild(invoiceTd);
+
+              const usernameTd = document.createElement('td');
+              usernameTd.innerText = deposit.username ? deposit.username : 'N/A'; // Handle null usernames
+              tr.appendChild(usernameTd);
+
+              const amountTd = document.createElement('td');
+              amountTd.innerText = deposit.amount.toFixed(8); // No commas
+              tr.appendChild(amountTd);
+
+              const dateTd = document.createElement('td');
+              dateTd.innerText = new Date(deposit.created_at).toLocaleString();
+              tr.appendChild(dateTd);
+
+              const walletTypeTd = document.createElement('td');
+              walletTypeTd.innerText = deposit.wallet_type ? deposit.wallet_type : 'N/A'; // Handle null wallet types
+              tr.appendChild(walletTypeTd);
+
+              const statusTd = document.createElement('td');
+              statusTd.innerText = deposit.status;
+              tr.appendChild(statusTd);
+
+              const actionTd = document.createElement('td');
+              const viewButton = document.createElement('button');
+              viewButton.innerText = 'Xem';
+              viewButton.classList.add('btn', 'btn-primary', 'mr-2');
+              viewButton.addEventListener('click', () => viewDeposit(deposit.id));
+
+              const deleteButton = document.createElement('button');
+              deleteButton.innerText = 'Xóa';
+              deleteButton.classList.add('btn', 'btn-danger');
+              deleteButton.addEventListener('click', () => deleteDeposit(deposit.id));
+
+              actionTd.appendChild(viewButton);
+              actionTd.appendChild(deleteButton);
+              tr.appendChild(actionTd);
+
+              tbody.appendChild(tr);
+            });
+          } else {
+            console.error(data.msg);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching deposit data:', error);
+        });
+    }
+
+    function viewDeposit(depositId) {
+      // Implement the logic for viewing deposit details
+      console.log('View deposit with ID:', depositId);
+      // You can navigate to a details page or open a modal here
+    }
+
+    function deleteDeposit(depositId) {
+      // Implement the logic for deleting a deposit
+      console.log('Delete deposit with ID:', depositId);
+      // You can call an API endpoint to delete the deposit here
+    }
+
+    fetchDepositData();
+  });
+</script>
+

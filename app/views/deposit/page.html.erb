@@ -1,0 +1,189 @@
+<%= render "base/sidebar" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Nạp tiền</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+					<li class="breadcrumb-item active">Nạp tiền</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+		<div class="row">
+		<div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">	
+              <i class="fas fa-bank"></i>
+              Trang nạp tiền
+            </h3>
+          </div>
+          <div class="card-body">
+            
+          <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Nạp tiền</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Nhập số tiền muốn nạp (theo USD)</label>
+                    <input name="amount" id="amount" type="number" class="form-control" placeholder="số tiền">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button id="naptien" type="submit" class="btn btn-primary">Nạp ngay</button>
+                </div>
+            </div>
+		  
+		  <div class="card card-success" id="payment" style="display: none;">
+              <div class="card-header">
+                <h3 class="card-title">Thông tin thanh toán</h3>
+              </div>
+              <div class="card-body">
+               Thông tin nạp tiền <br>
+			   vui lòng chuyển chính xác theo thông tin dưới <br>
+				
+				Địa chỉ ví nạp
+                <br>
+                <label id="address_wallet"></label>
+				<br>
+				Số tiền nạp
+                <br>
+				<label id="amount_deposit"> </label>
+				<br>
+				Lưu ý: Bạn có 30 phút kể từ khi tạo địa chỉ thanh toán, nếu quá thời gian sẽ tự động hủy. Chúng tôi không chịu trách nhiệm nếu gửi quá hạn. Tiền sẽ tự động cập nhật sau khi thanh toán thành công
+			  </div>
+			  <input type="hidden" id="id_invoice" value="BTC123">
+              <!-- /.card-body -->
+            </div>
+		  
+		  <div class="card card-dark">
+              <div class="card-header">
+                <h3 class="card-title">Lịch sử nạp</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="table-responsive">
+      <table id="deposit-table" class="table table-dark table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Ngày nạp</th>
+            <th>Địa chỉ ví nạp</th>
+            <th>Số tiền nạp</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be populated by AJAX -->
+        </tbody>
+      </table>
+    </div>
+              </div>
+              <!-- /.card-body -->
+              
+            </div>
+		  
+		  
+            </div>
+          <!-- /.card -->
+        </div>
+		</div>
+		
+			
+		
+		</div>
+	</div>
+	</div>
+	
+
+
+<script>
+  $(document).ready(function() {
+  
+   function fetchDeposits() {
+      $.ajax({
+        url: '/deposit/check',
+        method: 'GET',
+        dataType: 'json',
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+          var rows = '';
+          data.forEach(function(deposit) {
+            var statusClass = '';
+            if (deposit.status === 'Paid' || deposit.status === 'Over Paid') {
+              statusClass = 'bg-success';
+            } else if (deposit.status === 'pending') {
+              statusClass = 'bg-warning';
+            } else if (deposit.status === 'Expired') {
+              statusClass = 'bg-danger';
+            }
+            rows += `
+              <tr>
+                <td>${deposit.created_at}</td>
+                <td>${deposit.deposit_address}</td>
+                <td>${deposit.amount}</td>
+                <td><span class="badge ${statusClass}">${deposit.status}</span></td>
+              </tr>
+            `;
+          });
+          $('#deposit-table tbody').html(rows);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('Error fetching deposits:', textStatus, errorThrown);
+        }
+      });
+    }
+
+    // Fetch deposits when the page is loaded
+    fetchDeposits();
+  
+  
+  
+    // Thiết lập token CSRF cho tất cả các yêu cầu AJAX
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $('#naptien').click(function(event) {
+      event.preventDefault();
+
+      var amount = $('#amount').val();
+
+      $.ajax({
+        url: '/deposit',
+        method: 'POST',
+        data: { amount: amount },
+        success: function(response) {
+          if (response.code === 0) {
+		  
+		    $('#address_wallet').text(response.data.address);
+            $('#amount_deposit').text(response.data.amount);
+			   $('#payment').css('display', 'block');
+           fetchDeposits();
+            // Bạn có thể cập nhật giao diện người dùng tại đây, nếu cần
+          } else {
+            alert('Lỗi: ' + response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert('Có lỗi xảy ra: ' + error);
+        }
+      });
+    });
+  });
+</script>

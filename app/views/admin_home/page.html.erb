@@ -1,0 +1,135 @@
+<%= render "base/sidebar_admin" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Tổng quan tài khoản</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title"><strong>Tổng quan hàng tháng</strong></h5>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+               <strong><p class="text-center" id="salesDate">
+                    <!-- Sales date will be filled dynamically by JavaScript -->
+                  </p></strong>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                           <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_deposit" style="color: blue;">$</h5>
+                      <span class="description-text">TỔNG NẠP</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_withdraw" style="color: yellow;">$</h5>
+                      <span class="description-text">TỔNG RÚT</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <h5 class="description-header" id="total_bet" style="color: orange;">$</h5>
+                      <span class="description-text">TỔNG CƯỢC</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block">
+                      <h5 class="description-header" id="total_profit">$1,200</h5>
+                      <span class="description-text">LỢI NHUẬN</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>	
+		
+		
+		
+	
+		
+		
+		
+		</div>
+	</div>
+	</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function fetchData() {
+        fetch('/admin/get_full')
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    document.getElementById('total_deposit').innerText = `$${numberWithCommas(data.total_deposit.toFixed(2))}`;
+                    document.getElementById('total_withdraw').innerText = `$${numberWithCommas(data.total_withdraw.toFixed(2))}`;
+                    document.getElementById('total_bet').innerText = `$${numberWithCommas(data.total_bet.toFixed(2))}`;
+
+                    const totalProfitElement = document.getElementById('total_profit');
+                    const totalProfitValue = data.total_profit.toFixed(2);
+                    totalProfitElement.innerText = `$${numberWithCommas(totalProfitValue)}`;
+                    totalProfitElement.style.color = totalProfitValue < 0 ? 'red' : 'green';
+
+                    const currentDate = new Date();
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+                    const salesDateText = `Từ ngày ${thirtyDaysAgo.toLocaleDateString()} đến ${currentDate.toLocaleDateString()}`;
+                    document.getElementById('salesDate').innerText = salesDateText;
+
+                } else {
+                    console.error(data.msg);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    fetchData();
+
+});
+</script>

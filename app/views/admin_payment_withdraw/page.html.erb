@@ -1,0 +1,341 @@
+<%= render "base/sidebar_admin" %>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Danh sách rút tiền</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+  <div class="col-md-12">
+  
+  <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Tìm kiếm tài khoản</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form id="searchForm">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nhập tên tài khoản</label>
+                    <input type="text" class="form-control" id="username_search" placeholder="Username" name="username">
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+              </form>
+            </div>
+  
+  
+  
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Danh sách rút tiền</h3>
+      </div>
+      <div class="card-body">
+        <div id="userTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+          <div class="row">
+            <div class="col-sm-12 col-md-6"></div>
+            <div class="col-sm-12 col-md-6"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <table id="withdrawTable" class="table table-dark table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Số tiền rút</th>
+                    <th>Ngày rút</th>
+					<th>Loại ví</th>
+					<th>Trạng thái</th>
+					<th>Tùy chỉnh</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Rows will be populated by JavaScript -->
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info" id="userTable_info" role="status" aria-live="polite">
+                Hiển thị tổng số user ở đây
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="userTable_paginate">
+                <ul class="pagination">
+                  <li class="paginate_button page-item previous disabled" id="userTable_previous">
+                    <a href="#" aria-controls="userTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                  </li>
+                  <li class="paginate_button page-item active">
+                    <a href="#" aria-controls="userTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                  </li>
+                  <!-- More pagination items -->
+                  <li class="paginate_button page-item next" id="userTable_next">
+                    <a href="#" aria-controls="userTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+		  
+		  <!-- Modal -->
+<div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="withdrawModalLabel">Chi tiết rút tiền</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>ID:</strong> <span id="modalWithdrawId"></span></p>
+        <p><strong>Username:</strong> <span id="modalUsername"></span></p>
+        <p><strong>Số tiền rút:</strong> <span id="modalAmount"></span></p>
+        <p><strong>Ngày rút:</strong> <span id="modalDate"></span></p>
+        <p><strong>Loại ví:</strong> <span id="modalWalletType"></span></p>
+        <p><strong>Trạng thái:</strong> <span id="modalStatus"></span></p>
+        <p><strong>Địa chỉ rút:</strong> <span id="modalWithdrawAddress"></span></p>
+        <p><strong>Ghi chú:</strong> <span id="modalNote"></span></p>
+        <div class="mb-3">
+          <label for="editNote" class="form-label">Chỉnh sửa Ghi chú</label>
+          <textarea class="form-control" id="editNote" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="editStatus" class="form-label">Chỉnh sửa Trạng thái</label>
+          <select class="form-select" id="editStatus">
+            <option value="Success">Success</option>
+            <option value="Pending">Pending</option>
+            <option value="Cancel">Cancel</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="closeModalButton">Đóng</button>
+        <button type="button" class="btn btn-primary" id="saveChangesButton">Chỉnh sửa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+		  
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+		
+		
+		
+	
+		
+		
+		
+		</div>
+	</div>
+	</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function fetchWithdrawData() {
+    fetch('/admin/view/withdraw')
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 0) {
+          const withdrawData = data.data;
+          const tbody = document.querySelector('#withdrawTable tbody');
+          tbody.innerHTML = '';
+
+          withdrawData.forEach(withdraw => {
+            const tr = document.createElement('tr');
+
+            const idTd = document.createElement('td');
+            idTd.innerText = withdraw.id;
+            tr.appendChild(idTd);
+
+            const usernameTd = document.createElement('td');
+            usernameTd.innerText = withdraw.username ? withdraw.username : 'N/A'; // Handle null usernames
+            tr.appendChild(usernameTd);
+
+            const amountTd = document.createElement('td');
+            amountTd.innerText = withdraw.amount.toFixed(8); // No commas
+            tr.appendChild(amountTd);
+
+            const dateTd = document.createElement('td');
+            dateTd.innerText = new Date(withdraw.created_at).toLocaleString();
+            tr.appendChild(dateTd);
+
+            const walletTypeTd = document.createElement('td');
+            walletTypeTd.innerText = withdraw.wallet_type ? withdraw.wallet_type : 'N/A'; // Handle null wallet types
+            tr.appendChild(walletTypeTd);
+
+            const statusTd = document.createElement('td');
+            statusTd.innerText = withdraw.status;
+            // Apply color based on status
+            if (withdraw.status === 'Pending') {
+              statusTd.classList.add('text-warning');
+            } else if (withdraw.status === 'Success') {
+              statusTd.classList.add('text-success');
+            } else if (withdraw.status === 'Cancel') {
+              statusTd.classList.add('text-danger');
+            }
+            tr.appendChild(statusTd);
+
+            const actionTd = document.createElement('td');
+            const viewButton = document.createElement('button');
+            viewButton.innerText = 'Xem';
+            viewButton.classList.add('btn', 'btn-primary', 'mr-2');
+            viewButton.addEventListener('click', () => viewWithdraw(withdraw.id));
+
+            const approveButton = document.createElement('button');
+            approveButton.innerText = 'Duyệt';
+            approveButton.classList.add('btn', 'btn-success', 'mr-2');
+            approveButton.addEventListener('click', () => approveWithdraw(withdraw.id));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Xóa';
+            deleteButton.classList.add('btn', 'btn-danger');
+            deleteButton.addEventListener('click', () => deleteWithdraw(withdraw.id));
+
+            actionTd.appendChild(viewButton);
+            actionTd.appendChild(approveButton);
+            actionTd.appendChild(deleteButton);
+            tr.appendChild(actionTd);
+
+            tbody.appendChild(tr);
+          });
+        } else {
+          console.error(data.msg);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching withdraw data:', error);
+      });
+  }
+
+  function viewWithdraw(withdrawId) {
+    fetch(`/admin/view/withdraw/${withdrawId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data) {
+          document.getElementById('modalWithdrawId').innerText = data.id;
+          document.getElementById('modalUsername').innerText = data.username ? data.username : 'N/A';
+          document.getElementById('modalAmount').innerText = data.amount.toFixed(8);
+          document.getElementById('modalDate').innerText = new Date(data.created_at).toLocaleString();
+          document.getElementById('modalWalletType').innerText = data.wallet_type ? data.wallet_type : 'N/A';
+          document.getElementById('modalStatus').innerText = data.status;
+          document.getElementById('modalWithdrawAddress').innerText = data.withdraw_address ? data.withdraw_address : 'N/A';
+          document.getElementById('modalNote').innerText = data.note ? data.note : 'N/A';
+
+          document.getElementById('editNote').value = data.note ? data.note : '';
+          document.getElementById('editStatus').value = data.status;
+
+          const withdrawModal = new bootstrap.Modal(document.getElementById('withdrawModal'));
+          withdrawModal.show();
+        } else {
+          alert('Không tìm thấy thông tin chi tiết');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching withdraw details:', error);
+        alert('Lỗi khi lấy thông tin chi tiết');
+      });
+  }
+
+  function approveWithdraw(withdrawId) {
+    const note = `Đã duyệt vào lúc ${new Date().toLocaleString()}`;
+    fetch(`/admin/withdraw/accept/${withdrawId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      },
+      body: JSON.stringify({ note: note })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.code === 0) {
+        alert('Duyệt thành công');
+        fetchWithdrawData(); // Refresh the table data
+      } else {
+        alert(`Lỗi: ${data.msg}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error approving withdraw:', error);
+      alert('Lỗi khi duyệt rút tiền');
+    });
+  }
+
+  function deleteWithdraw(withdrawId) {
+    // Implement the logic for deleting a withdraw
+    console.log('Delete withdraw with ID:', withdrawId);
+    // You can call an API endpoint to delete the withdraw here
+  }
+
+  document.getElementById('saveChangesButton').addEventListener('click', function() {
+    const withdrawId = document.getElementById('modalWithdrawId').innerText;
+    const note = document.getElementById('editNote').value;
+    const status = document.getElementById('editStatus').value;
+
+    fetch(`/admin/withdraw/edit/${withdrawId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      },
+      body: JSON.stringify({ note: note, status: status })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.code === 0) {
+        alert('Cập nhật thành công');
+        fetchWithdrawData(); // Refresh the table data
+        const withdrawModal = bootstrap.Modal.getInstance(document.getElementById('withdrawModal'));
+        withdrawModal.hide();
+      } else {
+        alert(`Lỗi: ${data.msg}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating withdraw:', error);
+      alert('Lỗi khi cập nhật thông tin rút tiền');
+    });
+  });
+
+  document.getElementById('closeModalButton').addEventListener('click', function() {
+    const withdrawModal = bootstrap.Modal.getInstance(document.getElementById('withdrawModal'));
+    withdrawModal.hide();
+  });
+
+  fetchWithdrawData();
+});
+
+</script>

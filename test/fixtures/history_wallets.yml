@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  wallet_id: MyString
+  content: MyString
+  money_buy: 1.5
+  reward: 1.5
+
+two:
+  wallet_id: MyString
+  content: MyString
+  money_buy: 1.5
+  reward: 1.5

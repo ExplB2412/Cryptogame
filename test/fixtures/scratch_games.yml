@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reward: 1.5
+  user_id: 1
+  price: 1.5
+  status: MyString
+
+two:
+  reward: 1.5
+  user_id: 1
+  price: 1.5
+  status: MyString

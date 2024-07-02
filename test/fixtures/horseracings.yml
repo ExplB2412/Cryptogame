@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  horse_buy: MyString
+  top1: MyString
+  top2: MyString
+  top3: MyString
+  top4: MyString
+  speed1: MyString
+  speed2: MyString
+  speed3: MyString
+  speed4: MyString
+  status: MyString
+  price: 1.5
+  reward: 1.5
+
+two:
+  user_id: 1
+  horse_buy: MyString
+  top1: MyString
+  top2: MyString
+  top3: MyString
+  top4: MyString
+  speed1: MyString
+  speed2: MyString
+  speed3: MyString
+  speed4: MyString
+  status: MyString
+  price: 1.5
+  reward: 1.5

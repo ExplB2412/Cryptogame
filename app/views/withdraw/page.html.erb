@@ -1,0 +1,168 @@
+<%= render "base/sidebar" %>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Nạp tiền</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Nạp tiền</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content container-fluid">
+    <div class="container-fluid">  
+      <div class="row">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-bank"></i>
+              Trang rút tiền
+            </h3>
+          </div>
+          <div class="card-body">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Nạp tiền</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Nhập số tiền muốn rút (theo BTC)</label>
+                  <input name="amount" id="amount" type="number" class="form-control" placeholder="Số tiền">
+                </div>
+                <div class="form-group">
+                  <label>Nhập địa chỉ ví BTC</label>
+                  <input name="wallet_address1" id="wallet_address1" type="text" class="form-control" placeholder="Địa chỉ ví">
+                </div>
+                <div class="form-group">
+                  <label>Xác nhận lại địa chỉ ví BTC</label>
+                  <input name="wallet_address2" id="wallet_address2" type="text" class="form-control" placeholder="Xác nhận địa chỉ ví">
+                </div>
+                <div class="form-group">
+                  <label>Vui lòng kiểm tra kỹ địa chỉ trước khi rút. Chúng tôi không chịu trách nhiệm khi nhập nhầm ví.</label>
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button id="rutngay" type="submit" class="btn btn-primary">Rút ngay</button>
+              </div>
+            </div>
+
+            <div class="card card-dark">
+              <div class="card-header">
+                <h3 class="card-title">Lịch sử rút</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="withdraw-table" class="table table-dark table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Ngày rút</th>
+                        <th>Địa chỉ ví rút</th>
+                        <th>Số tiền rút</th>
+                        <th>Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Rows will be populated by AJAX -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    function fetchWithdraws() {
+      $.ajax({
+        url: '/withdraw/check',
+        method: 'GET',
+        dataType: 'json',
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+          var rows = '';
+          data.forEach(function(withdraw) {
+            var statusClass = '';
+            if (withdraw.status === 'Success') {
+              statusClass = 'bg-success';
+            } else if (withdraw.status === 'pending') {
+              statusClass = 'bg-warning';
+            } else if (withdraw.status === 'Expired') {
+              statusClass = 'bg-danger';
+            }
+            rows += `
+              <tr>
+                <td>${withdraw.created_at}</td>
+                <td>${withdraw.withdraw_address}</td>
+                <td>${withdraw.amount}</td>
+                <td><span class="badge ${statusClass}">${withdraw.status}</span></td>
+              </tr>
+            `;
+          });
+          $('#withdraw-table tbody').html(rows);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('Error fetching withdraws:', textStatus, errorThrown);
+        }
+      });
+    }
+
+    // Fetch withdraws when the page is loaded
+    fetchWithdraws();
+
+    // Thiết lập token CSRF cho tất cả các yêu cầu AJAX
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $('#rutngay').click(function(event) {
+      event.preventDefault();
+
+      var amount = $('#amount').val();
+      var wallet_address1 = $('#wallet_address1').val();
+      var wallet_address2 = $('#wallet_address2').val();
+
+      $.ajax({
+        url: '/withdraw/with_request',
+        method: 'POST',
+        data: {
+          amount: amount,
+          wallet_address1: wallet_address1,
+          wallet_address2: wallet_address2
+        },
+        success: function(response) {
+          if (response.code === 0) {
+            alert('Yêu cầu rút tiền đã được gửi.');
+            fetchWithdraws();
+          } else {
+            alert('Lỗi: ' + response.msg);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert('Có lỗi xảy ra: ' + error);
+        }
+      });
+    });
+  });
+</script>

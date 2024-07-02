@@ -1,0 +1,2 @@
+class WalletId < ApplicationRecord
+end

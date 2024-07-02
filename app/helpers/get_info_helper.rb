@@ -1,0 +1,2 @@
+module GetInfoHelper
+end

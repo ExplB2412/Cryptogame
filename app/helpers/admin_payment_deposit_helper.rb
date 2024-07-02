@@ -1,0 +1,2 @@
+module AdminPaymentDepositHelper
+end

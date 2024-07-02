@@ -1,0 +1,2 @@
+module HorseracingHelper
+end

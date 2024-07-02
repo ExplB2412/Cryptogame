@@ -1,0 +1,161 @@
+<%= render "base/sidebar" %>
+
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0 text-dark">Tổng quan tài khoản</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Tổng quan</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content container-fluid">
+		<div class="container-fluid">  
+	
+		
+	<div class="row">
+          <div class="col-md-12">
+		  
+		  <div class="card card-success direct-chat direct-chat-primary shadow-lg">
+              <div class="card-header">
+                <h3 class="card-title">Hỗ trợ trực tiếp</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <!-- Conversations are loaded here -->
+                <div class="direct-chat-messages">
+                  <!-- Message. Default to the left -->
+                 
+				  
+			
+                </div>
+                <!--/.direct-chat-messages-->
+
+                <!-- Contacts are loaded here -->
+                <!-- /.direct-chat-pane -->
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <form action="#" method="post">
+                  <div class="input-group">
+                    <input type="text" name="message" placeholder="Nhập tin nhắn gửi" class="form-control">
+                    <span class="input-group-append">
+                      <button type="submit" class="btn btn-danger">Gửi</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card-footer-->
+            </div>
+		  
+                     </div>
+          <!-- /.col -->
+        </div>	
+		
+		
+		
+			
+		
+		
+		</div>
+	</div>
+	</div>
+
+
+
+
+
+<script>
+  $(document).ready(function() {
+    $('form').on('submit', function(e) {
+      e.preventDefault(); // Ngăn chặn việc gửi form truyền thống
+
+      var message = $('input[name="message"]').val();
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        url: '/support/post_ticket',
+        method: 'POST',
+        data: {
+          message: message
+        },
+        success: function(response) {
+          // Xử lý phản hồi từ server, nếu cần
+          alert(response.msg);
+          $('input[name="message"]').val('');
+          location.reload(); // Refresh lại trang sau khi gửi tin nhắn thành công
+        },
+        error: function() {
+          alert('Đã xảy ra lỗi khi gửi tin nhắn.');
+        }
+      });
+    });
+
+    function fetchMessages() {
+      $.ajax({
+        url: '/support/get_ticket',
+        method: 'GET',
+        success: function(response) {
+          console.log('Response:', response); // Log the response for debugging
+
+          if (response && Array.isArray(response)) {
+            $('.direct-chat-messages').empty(); // Clear previous messages
+            response.forEach(function(message) {
+              var messageHtml = '';
+              if (message.sender === '1') {
+                messageHtml =
+                  '<div class="direct-chat-msg right">' +
+                    '<div class="direct-chat-infos clearfix">' +
+                      '<span class="direct-chat-name float-right">Bạn</span>' +
+                      '<span class="direct-chat-timestamp float-left">' + message.created_at + '</span>' +
+                    '</div>' +
+                    '<img class="direct-chat-img" src="/assets/dist/img/user3-128x128.jpg" alt="Message User Image">' +
+                    '<div class="direct-chat-text">' +
+                      message.content +
+                    '</div>' +
+                  '</div>';
+              } else if (message.sender === '2') {
+                messageHtml =
+                  '<div class="direct-chat-msg">' +
+                    '<div class="direct-chat-infos clearfix">' +
+                      '<span class="direct-chat-name float-left">Admin</span>' +
+                      '<span class="direct-chat-timestamp float-right">' + message.created_at + '</span>' +
+                    '</div>' +
+                    '<img class="direct-chat-img" src="/assets/dist/img/user1-128x128.jpg" alt="Message User Image">' +
+                    '<div class="direct-chat-text">' +
+                      message.content +
+                    '</div>' +
+                  '</div>';
+              }
+              $('.direct-chat-messages').append(messageHtml);
+            });
+            scrollToBottom(); // Scroll to the bottom after messages are loaded
+          } else {
+            console.error('Response is not a valid array.');
+          }
+        },
+        error: function() {
+          alert('Đã xảy ra lỗi khi lấy tin nhắn.');
+        }
+      });
+    }
+
+    // Function to scroll to the bottom of the messages
+    function scrollToBottom() {
+      $('.direct-chat-messages').scrollTop($('.direct-chat-messages')[0].scrollHeight);
+    }
+
+    // Fetch messages when the page loads
+    fetchMessages();
+  });
+</script>
